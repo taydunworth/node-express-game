@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Guess The Word</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <div class="wrapper">
+      <h1>Guess The Word</h1>
+      <h2>Guess a Letter</h2>
+      <form action="/add" method="post" class="add-item">
+        <input type="text" name="letterGuessed" value="">
+        <button type="submit" name="button" class="submit-btn">Guess</button>
+      </form>
+      <h2>Letters Guessed</h2>
+
+        <p>{{#letters}}{{letter}} {{/letters}}</p>
+
+    </div>
+  </body>
+</html>
