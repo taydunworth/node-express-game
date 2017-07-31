@@ -8,15 +8,14 @@
   <body>
     <div class="wrapper">
       <h1>Guess The Word</h1>
+        <p>{{letterSlots}}</p>
       <h2>Guess a Letter</h2>
       <form action="/add" method="post" class="add-item">
         <input type="text" name="letterGuessed" value="">
         <button type="submit" name="button" class="submit-btn">Guess</button>
       </form>
       <h2>Letters Guessed</h2>
-
-        <p>{{#letters}}{{letter}} {{/letters}}</p>
-
+        <p>{{#letters}}{{letter}}{{/letters}}</p>
     </div>
   </body>
 </html>
