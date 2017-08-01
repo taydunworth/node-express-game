@@ -7,17 +7,14 @@ const app = express()
 const words = fs.readFileSync("/usr/share/dict/words", "utf-8").toLowerCase().split("\n");
 const wordToGuess = words[Math.floor(Math.random() * words.length)]
 const wordLength = wordToGuess.split("")
-const letters = []
-let letterSlots = []
+const guess = []
 let count = 8
 
-letterSlots = wordLength.map( x => {
-  return (x = '_ ')
-  }).join('')
+let placeholder = wordLength.map(x => {
+  return '_'
+})
 
-console.log(wordLength);
 console.log(wordToGuess);
-console.log(letterSlots);
 
 app.use(express.static('public'))
 app.use(bodyParser.json())
@@ -29,18 +26,22 @@ app.set('views', './views')
 app.set('view engine', 'mustache')
 
 app.get('/', function(req, res) {
-  res.render('index', { letters : letters, letterSlots : letterSlots, wordToGuess : wordToGuess, words : words })
+  res.render('index', { guess : guess, placeholder : placeholder, wordToGuess : wordToGuess, words : words, count: count})
 })
 
 app.post('/add', function(req, res) {
-  if (letters.indexOf('letters') > -1) {
-    console.log(letter);
-  } else {
-    letters.push({ letter: req.body.letterGuessed })
-  }
+  // Add the user's letter to the array of already guessed letters
+  guess.push({ letter: req.body.letterGuessed })
 
-  // if letter exists, place in that slot
-  // if letter does not exist, add to list
+  // go through the secret word one letter at time
+  wordLength.forEach(function(letter, index) {
+
+    // if that letter is the letter the user guessed
+    if (letter === req.body.letterGuessed) {
+      // Replace that *INDEX* within the placeholder with the letter
+      placeholder[index] = letter
+    }
+  })
 
   res.redirect('/')
 })
