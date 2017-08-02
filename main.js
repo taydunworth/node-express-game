@@ -40,10 +40,7 @@ app.get('/lose', function(req, res) {
 
 app.post('/add', function(req, res) {
 
-  if (guess.includes(req.body.letterGuessed)) {
-    console.log('you have already guessed that letter')
-    res.redirect('/')
-  } else if (wordLength.includes(req.body.letterGuessed)) {
+  if (wordLength.includes(req.body.letterGuessed)) {
     wordLength.forEach(function(letter, index) {
       // if that letter is the letter the user guessed
       if (letter === req.body.letterGuessed) {
