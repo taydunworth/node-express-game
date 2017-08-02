@@ -7,20 +7,22 @@
   </head>
   <body>
     <div class="wrapper">
-      <h1>Guess The Word</h1>
-        <ul>
-          {{#placeholder}}
-            <li>{{.}}</li>
-          {{/placeholder}}
-        </ul>
-      <h2>Guess a Letter</h2>
-      <form action="/add" method="post" class="add-item">
-        <input type="text" name="letterGuessed" value="" maxlength="1">
-        <button type="submit" name="button" class="submit-btn">Guess</button>
-      </form>
-      <p><strong>Attempts Left:</strong> {{count}}</p>
-      <h2>Letters Guessed</h2>
-        <p>{{#guess}}{{letter}}{{/guess}}</p>
+      <div class="game-container">
+        <h1>Guess The Word</h1>
+          <ul>
+            {{#placeholder}}
+              <li>{{.}}</li>
+            {{/placeholder}}
+          </ul>
+        <h2>Guess a Letter</h2>
+        <form action="/add" method="post" class="add-item">
+          <input type="text" name="letterGuessed" value="" maxlength="1">
+          <button type="submit" name="button" class="submit-btn">Guess</button>
+        </form>
+        <p><strong>Attempts Left:</strong> {{count}}</p>
+        <h2 class="guess">Letters Guessed</h2>
+          <p class="guessed-letters">{{#guess}}{{letter}} {{/guess}}</p>
+      </div>
     </div>
   </body>
 </html>

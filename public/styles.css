@@ -1,0 +1,46 @@
+body {
+  font-family: 'Raleway', Arial, Helvetica, sans-serif;
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.game-container {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  align-items: center;
+  justify-content: center;
+  height: 60%;
+  position: absolute;
+  margin: auto;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+ul {
+  list-style-type: none;
+  display: flex;
+  padding: 0;
+  width: 40%;
+  justify-content: space-between;
+}
+
+li {
+  font-size: 2em;
+}
+
+.guess {
+  border-bottom: 4px solid #000;
+  padding-bottom: 8px;
+}
+
+.guessedLetters {
+  font-size: 1.5em;
+}
