@@ -16,8 +16,6 @@ let placeholder = wordLength.map(x => {
   return '_'
 })
 
-console.log(wordToGuess);
-
 app.use(express.static('public'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -60,7 +58,6 @@ app.post('/add', function(req, res) {
     count -= 1
     if (placeholder.join(',') != wordLength.join(',') && count <= 0) {
       message = 'You lose!'
-      console.log(message)
       res.redirect('/lose')
     }
   }
@@ -70,7 +67,6 @@ app.post('/add', function(req, res) {
 
   if (placeholder.join(',') === wordLength.join(',') && count >= 0) {
     message = 'You win!'
-    console.log(message)
     res.redirect('/win')
   }
   res.redirect('/')
