@@ -3,6 +3,7 @@ const path = require('path')
 const mustacheExpress = require('mustache-express')
 const bodyParser = require('body-parser')
 const fs = require('fs')
+const expressSession = require('express-session')
 const app = express()
 const words = fs.readFileSync("/usr/share/dict/words", "utf-8").toLowerCase().split("\n")
 const wordToGuess = words[Math.floor(Math.random() * words.length)]
@@ -20,6 +21,13 @@ console.log(wordToGuess);
 app.use(express.static('public'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
+app.use(
+  expressSession({
+    secret: 'hangman',
+    resave: false,
+    saveUninitialized: true
+  })
+)
 
 app.engine('mustache', mustacheExpress())
 
