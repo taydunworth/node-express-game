@@ -4,9 +4,13 @@ const mustacheExpress = require('mustache-express')
 const bodyParser = require('body-parser')
 const fs = require('fs')
 const expressSession = require('express-session')
+
 const app = express()
+
+
 const words = fs.readFileSync("/usr/share/dict/words", "utf-8").toLowerCase().split("\n")
 const wordToGuess = words[Math.floor(Math.random() * words.length)]
+
 const wordLength = wordToGuess.split("")
 const guess = []
 let count = 8
@@ -32,8 +36,8 @@ app.engine('mustache', mustacheExpress())
 app.set('views', './views')
 app.set('view engine', 'mustache')
 
-app.get('/', function(req, res) {
-  res.render('index', { guess : guess, placeholder : placeholder, count: count, message: message })
+app.get('/', function(req, res, next) {
+    res.render('index', { guess : guess, placeholder : placeholder, count: count, message: message })
 })
 
 app.get('/win', function(req, res) {
