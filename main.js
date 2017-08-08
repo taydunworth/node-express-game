@@ -7,18 +7,7 @@ const expressSession = require('express-session')
 
 const app = express()
 
-
-const words = fs.readFileSync("/usr/share/dict/words", "utf-8").toLowerCase().split("\n")
-const wordToGuess = words[Math.floor(Math.random() * words.length)]
-
-const wordLength = wordToGuess.split("")
-const guess = []
-let count = 8
-let message = ''
-
-let placeholder = wordLength.map(x => {
-  return '_'
-})
+const words = fs.readFileSync('/usr/share/dict/words', 'utf-8').toLowerCase().split('\n')
 
 app.use(express.static('public'))
 app.use(bodyParser.json())
@@ -37,7 +26,18 @@ app.set('views', './views')
 app.set('view engine', 'mustache')
 
 app.get('/', function(req, res, next) {
-    res.render('index', { guess : guess, placeholder : placeholder, count: count, message: message })
+  if (!req.session.splitWord) {
+    const wordToGuess = words[Math.floor(Math.random() * words.length)]
+    // split the array
+    req.session.splitWord = wordToGuess.split('')
+    req.session.placeholder = req.session.splitWord.map(x => {
+      return '_'
+    })
+    req.session.guess = []
+    req.session.count = 8
+  }
+  const _data = { guess: req.session.guess, placeholder: req.session.placeholder, count: req.session.count }
+  res.render('index', _data)
 })
 
 app.get('/win', function(req, res) {
@@ -45,37 +45,33 @@ app.get('/win', function(req, res) {
 })
 
 app.get('/lose', function(req, res) {
+  req.session.splitWord = undefined
   res.render('lose')
 })
 
 app.post('/add', function(req, res) {
-
-  if (wordLength.includes(req.body.letterGuessed)) {
-    wordLength.forEach(function(letter, index) {
+  if (req.session.splitWord.includes(req.body.letterGuessed)) {
+    req.session.splitWord.forEach(function(letter, index) {
       // if that letter is the letter the user guessed
       if (letter === req.body.letterGuessed) {
         // Replace that *INDEX* within the placeholder with the letter
-        placeholder[index] = letter
+        req.session.placeholder[index] = letter
       }
     })
   } else {
-    count -= 1
-    if (placeholder.join(',') != wordLength.join(',') && count <= 0) {
-      message = 'You lose!'
+    req.session.count -= 1
+    if (req.session.placeholder.join(',') != req.session.splitWord.join(',') && req.session.count <= 0) {
       res.redirect('/lose')
     }
   }
 
-  guess.push({ letter: req.body.letterGuessed })
+  req.session.guess.push({ letter: req.body.letterGuessed })
 
-
-  if (placeholder.join(',') === wordLength.join(',') && count >= 0) {
-    message = 'You win!'
+  if (req.session.placeholder.join(',') === req.session.splitWord.join(',') && req.session.count >= 0) {
     res.redirect('/win')
   }
   res.redirect('/')
 })
-
 
 app.listen(3000, function() {
   console.log('Successfully started express application!')
